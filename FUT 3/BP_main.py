@@ -30,8 +30,6 @@ def main():
             #    Graph.plot_graph_five()
 
 
-
-
         nova_janela = tk.Tk()
         nova_janela.title("Bomba Patch 2020 ATUALIZADO")
         nova_janela.geometry("1200x700")
@@ -40,17 +38,16 @@ def main():
         mostraPontos.place(relx=0.7, rely=0.5, anchor=CENTER)
         mostraPontos.delete(1.0, END)
 
-        bpf.get_interception_points(Field, mostraPontos)
+        if bpf.get_interception_points(Field, mostraPontos):
+            combo = Combobox(nova_janela, width=30)
+            combo['values'] = ("Ponto de interceptação", "Posição x Tempo", "Velocidade x Tempo", "Acelereração x Tempo", "Distancia x Tempo")
+            combo.current(0)  # definimos o valor padrão!
+            combo.pack()
+            combo.place(x=280, y=300, anchor=CENTER)
 
-        combo = Combobox(nova_janela, width=30)
-        combo['values'] = ("Ponto de interceptação", "Posição x Tempo", "Velocidade x Tempo", "Acelereração x Tempo", "Distancia x Tempo")
-        combo.current(0)  # definimos o valor padrão!
-        combo.pack()
-        combo.place(x=280, y=300, anchor=CENTER)
-
-        botao = Button(nova_janela, text="Mostrar Gráfico", command=exibeValor)
-        botao.pack()
-        botao.place(x=280, y=350, anchor=CENTER)
+            botao = Button(nova_janela, text="Mostrar Gráfico", command=exibeValor)
+            botao.pack()
+            botao.place(x=280, y=350, anchor=CENTER)
 
 
         nova_janela.mainloop()
