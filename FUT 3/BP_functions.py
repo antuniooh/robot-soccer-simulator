@@ -42,7 +42,7 @@ def create_field(ball, robot, coordinates):
 
 def get_interception_points(field, mostraPontos):
     if len(field.Interception_Index_Points) > 0:
-        mostraPontos.insert(END, ("QUANTIDADE DE PONTOS POSSIVEIS: " + str(len(field.Interception_Index_Points))))
+        mostraPontos.insert(END, ("\t        QUANTIDADE DE PONTOS POSSIVEIS: " + str(len(field.Interception_Index_Points))))
         mostraPontos.insert(END, "\n-------------------------------------------------------------------------------")
 
         for line in range(len(field.Interception_Index_Points)):
@@ -52,9 +52,10 @@ def get_interception_points(field, mostraPontos):
             mostraPontos.insert(END, "\nTEMPO QUE O ROBO LEVA PARA CHEGAR:  %.3fs  Bola: %ss" %
                   (field.Interception_Robot[line][0], str(field.Ball_txt[field.Interception_Index_Points[line]][0])))
             mostraPontos.insert(END, "\n---------------------------------------------------------------------------")
-
+        return 1
     else:
         mostraPontos.insert(END, "O robô NÃO intercepta a bola")
+        return 0
 
 
 def plot_graph_one(field):
