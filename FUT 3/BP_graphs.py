@@ -3,18 +3,48 @@ import matplotlib.image as mpimg
 import numpy as np
 import File_Handling_functions as fh
 
+'''
+Sx = ((-0.008 * pow(t, 3)) - (0.15 * pow(t, 2)) + 2.5 * t + 1)
+Vx = (((-0.024 * pow(t, 2)) - 0.3 * t + 2.5001)
+Ax = ((-0.048 * t) - 0.3)
+
+Sy = - ((0.2 * pow(t, 1.5)) + 1.6*t + 1)
+Vy = - ((0,3 * pow(t, 0.5)) + 1.6)
+Ay = - (0.15 * pow(t, 0.5))
+'''
+
 
 class Equation:
     def __init__(self, field):
         self.Field = field
         self.X_ball = []
         self.Y_ball = []
+        self.T_ball = []
 
     def fill_x_and_y_lists(self):
-        self.X_ball, self.Y_ball = fh.create_matrix(self.Field.Ball_txt, 1)
+        self.X_ball, self.Y_ball, self.T_ball = fh.create_matrix(self.Field.Ball_txt, 0)
+
+    def rect_y(self):
+        print("Tempo Bola: %.5f" % self.Field.Interception_Index_Points[0])
+
+        To = 0
+        Tf = self.Field.Ball_txt[self.Field.Interception_Index_Points[0]][0]
+
+        Yo = self.Field.Robot.Y
+        Yf = self.Field.Interception_Robot[1][2]
+
+        deltaY = Yf - Yo
+        deltaX = Tf - To
+
+        m = deltaY/deltaX
+        q = Yf - (m * Tf)
+
+        print("deltaY = %.5f  deltaX = %.5f" % (deltaY, deltaX))
+        print("m = %.5f  q = %.5f\n" % (m, q))
+
+        return m, q
 
     def plot_graph_one(self):
-        self.fill_x_and_y_lists()
 
         xR = [self.Field.Interception_Robot[0][1], self.Field.Interception_Robot[1][1]]
         yR = [self.Field.Interception_Robot[0][2], self.Field.Interception_Robot[1][2]]
@@ -39,6 +69,47 @@ class Equation:
         plt.annotate('Ponto com Menor Tempo', xy=(float(self.Field.Ball_txt[InterceptionPoint][1]), float(self.Field.Ball_txt[InterceptionPoint][2])),
                      xytext=(float(self.Field.Ball_txt[InterceptionPoint][1]), float(self.Field.Ball_txt[InterceptionPoint][2]) + 1),
                      arrowprops=dict(arrowstyle='->'))
+
+        plt.show()
+
+    def plot_graph_two(self):
+        T_ball = []
+        Sx_ball = []
+        Sy_ball = []
+        T_robot = []
+        Sx_robot = []
+        Sy_robot = []
+
+        t = 0
+
+        My, Qy = self.rect_y()
+
+        while t <= 4.2:
+            SxB = ((-0.008 * pow(t, 3)) - (0.15 * pow(t, 2)) + 2.5 * t + 1)
+            # SxR = [equação do robô]
+
+            SyB = ((0.2 * pow(t, 1.5)) + 1.6*t + 1)
+            SyR = My * t + Qy
+
+            T_ball.append(t)
+            Sy_ball.append(SyB)
+
+            T_robot.append(t)
+            Sy_robot.append(SyR)
+
+            t += 0.2
+
+        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
+             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
+
+        plt.plot(T_ball, Sy_ball, color='red', label='Sy(t) da Bola')
+        plt.plot(T_robot, Sy_robot, color='yellow', label='Sy(t) do Robô')
+
+        plt.legend()
+
+        plt.title("Gráfico das componentes Sx e Sy da Bola e do Robo")
+        plt.xlabel("t(s)")
+        plt.ylabel("S(m)")
 
         plt.show()
 

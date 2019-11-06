@@ -51,7 +51,12 @@ class Field:
             if distance <= 0:
                 time = 0
             self.Interception_Index_Points.append(index)
-            self.Interception_Robot.append([time, ball.X, ball.Y])
+
+            if index == 0:
+                self.Interception_Robot[0] = [time, ball.X, ball.Y]
+            else:
+                self.Interception_Robot.append([time, ball.X, ball.Y])
+
 
     def run_coordinates(self):
         i = 0
