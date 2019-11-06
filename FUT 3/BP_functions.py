@@ -1,11 +1,11 @@
 import BP_classes as bpc
 import BP_graphs as bpg
-import BP_gui as bp_gui
 from tkinter import scrolledtext
 from tkinter import *
 from tkinter import messagebox
 import tkinter as tk
 from tkinter.ttk import *
+
 
 def get_robot_x():
     X_robot = float(input("X: "))
@@ -21,8 +21,7 @@ def get_robot_y():
     return Y_robot
 
 
-def create_robot(x,y):
-
+def create_robot(x, y):
     Robot = bpc.Robot(x, y)
 
     return Robot
@@ -42,15 +41,17 @@ def create_field(ball, robot, coordinates):
 
 def get_interception_points(field, mostraPontos):
     if len(field.Interception_Index_Points) > 0:
-        mostraPontos.insert(END, ("\t        QUANTIDADE DE PONTOS POSSIVEIS: " + str(len(field.Interception_Index_Points))))
+        mostraPontos.insert(END,
+                            ("\t        QUANTIDADE DE PONTOS POSSIVEIS: " + str(len(field.Interception_Index_Points))))
         mostraPontos.insert(END, "\n-------------------------------------------------------------------------------")
 
         for line in range(len(field.Interception_Index_Points)):
             mostraPontos.insert(END, "\nPONTOS POSSIVEIS DE INTERCEPTAÇÃO:"
-                  " X:" + str(field.Ball_txt[field.Interception_Index_Points[line]][1])
-                  + " Y:" + str(field.Ball_txt[field.Interception_Index_Points[line]][2]))
+                                     " X:" + str(field.Ball_txt[field.Interception_Index_Points[line]][1])
+                                + " Y:" + str(field.Ball_txt[field.Interception_Index_Points[line]][2]))
             mostraPontos.insert(END, "\nTEMPO QUE O ROBO LEVA PARA CHEGAR:  %.3fs  Bola: %ss" %
-                  (field.Interception_Robot[line][0], str(field.Ball_txt[field.Interception_Index_Points[line]][0])))
+                                (field.Interception_Robot[line][0],
+                                 str(field.Ball_txt[field.Interception_Index_Points[line]][0])))
             mostraPontos.insert(END, "\n---------------------------------------------------------------------------")
         return 1
     else:

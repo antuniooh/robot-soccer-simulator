@@ -1,6 +1,5 @@
 import BP_classes as bpc
 import BP_graphs as bpg
-import BP_gui as bp_gui
 import File_Handling_functions as fh
 import BP_functions as bpf
 import matplotlib.pyplot as plt
@@ -18,10 +17,11 @@ def main():
             # mensagem["text"]="Valor: "+ combo.get()
             print(combo.get())
             Graph = bpg.Equation(Field)
+            Graph.fill_x_and_y_lists()
             if (combo.get() == "Ponto de interceptação"):
                 Graph.plot_graph_one()
             elif (combo.get() == "Posição x Tempo"):
-                Graph.plot_graph_one()
+                Graph.plot_graph_two()
             elif (combo.get() == "Velocidade x Tempo"):
                 Graph.plot_graph_three()
             elif (combo.get() == "Acelereração x Tempo"):
