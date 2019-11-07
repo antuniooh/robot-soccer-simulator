@@ -25,6 +25,7 @@ class Field:
         self.In_game_time = ball_in_game_time
         self.Interception_Index_Points = []
         self.Interception_Robot = [[0, robot.X, robot.Y]]
+        self.FieldLimit = ()
 
     def calculate_distance(self, robot, ball):
         x = robot.X - ball.X
@@ -65,4 +66,6 @@ class Field:
             self.Ball.Y = float(line[2])
             self.Ball.Time = float(line[0])
             self.append_lists(i)
+            if float(line[0]) == 4.2:
+                self.FieldLimit = (i, float(line[0]), float(line[1]), float(line[2]))
             i += 1

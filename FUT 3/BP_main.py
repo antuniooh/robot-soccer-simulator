@@ -21,11 +21,15 @@ def main():
             if (combo.get() == "Ponto de interceptação"):
                 Graph.plot_graph_one()
             elif (combo.get() == "Posição x Tempo"):
-                Graph.plot_graph_two()
+                Graph.plot_graph_two_Y()
+                Graph.plot_graph_two_X()
             elif (combo.get() == "Velocidade x Tempo"):
-                Graph.plot_graph_three()
+                Graph.plot_graph_threeY()
+                Graph.plot_graph_threeX()
             elif (combo.get() == "Acelereração x Tempo"):
-                Graph.plot_graph_four()
+                Graph.plot_graph_fourY()
+                Graph.plot_graph_fourX()
+
             #elif (combo.get() == "Distancia x Tempo"):
             #    Graph.plot_graph_five()
 

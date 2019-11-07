@@ -44,21 +44,66 @@ class Equation:
 
         return m, q
 
+    def rect_x(self):
+        print("Tempo Bola: %.5f" % self.Field.Interception_Index_Points[0])
+
+        To = 0
+        Tf = self.Field.Ball_txt[self.Field.Interception_Index_Points[0]][0]
+
+        Xo = self.Field.Robot.X
+        Xf = self.Field.Interception_Robot[1][1]
+
+        deltaY = Xf - Xo
+        deltaX = Tf - To
+
+        m = deltaY / deltaX
+        q = Xf - (m * Tf)
+
+        print("deltaY = %.5f  deltaX = %.5f" % (deltaY, deltaX))
+        print("m = %.5f  q = %.5f\n" % (m, q))
+
+        return m, q
+
+    def rect_graphOne(self):
+        Xo = self.Field.Interception_Robot[0][1]
+        Yo = self.Field.Interception_Robot[0][2]
+        Xf = self.Field.Interception_Robot[1][1]
+        Yf = self.Field.Interception_Robot[1][2]
+
+        deltaY = Yf - Yo
+        deltaX = Xf - Xo
+
+        m = deltaY/deltaX
+        q = Yf - m * Xf
+
+        return m, q
+
     def plot_graph_one(self):
 
-        xR = [self.Field.Interception_Robot[0][1], self.Field.Interception_Robot[1][1]]
-        yR = [self.Field.Interception_Robot[0][2], self.Field.Interception_Robot[1][2]]
-        tempX = self.X_ball[0:self.Field.Interception_Index_Points[0]]
-        tempY = self.Y_ball[0:self.Field.Interception_Index_Points[0]]
+        m, q = self.rect_graphOne()
+        x = 0
+
+        Xrobo = []
+        Yrobo = []
+        while x <= 9:
+            TrajRobo = m*x + q
+            Xrobo.append(x)
+            Yrobo.append(TrajRobo)
+            x += 1
+
+        tempX = self.X_ball[0:self.Field.FieldLimit[0]]
+        tempY = self.Y_ball[0:self.Field.FieldLimit[0]]
         xB = tempX
         yB = tempY
 
-        plt.plot(xR, yR, color='yellow')
-        plt.plot(xB, yB, color='red')
+        plt.plot(Xrobo, Yrobo, color='yellow', label='Trajetória do Robô')
+        plt.plot(xB, yB, color='red', label='Trajetória da Bola')
 
-        plt.title(str(len(self.Field.Interception_Index_Points)) + ' Pontos Possíveis de Interceptação')
-        plt.xlabel('t(s)')
-        plt.ylabel('s(m)')
+        plt.legend()
+
+        plt.title('Trajetória da Bola e do Robô')
+        plt.xlabel('x (m)')
+        plt.ylabel('y (m)')
 
         img = mpimg.imread("campo_de_futebol.png")  # imagem de fundo
         plt.imshow(img, extent=[0, 9.5, 0, 6.2])
@@ -72,12 +117,10 @@ class Equation:
 
         plt.show()
 
-    def plot_graph_two(self):
+    def plot_graph_two_Y(self):
         T_ball = []
-        Sx_ball = []
         Sy_ball = []
         T_robot = []
-        Sx_robot = []
         Sy_robot = []
 
         t = 0
@@ -85,9 +128,6 @@ class Equation:
         My, Qy = self.rect_y()
 
         while t <= 4.2:
-            SxB = ((-0.008 * pow(t, 3)) - (0.15 * pow(t, 2)) + 2.5 * t + 1)
-            # SxR = [equação do robô]
-
             SyB = ((0.2 * pow(t, 1.5)) + 1.6*t + 1)
             SyR = My * t + Qy
 
@@ -105,72 +145,200 @@ class Equation:
         plt.plot(T_ball, Sy_ball, color='red', label='Sy(t) da Bola')
         plt.plot(T_robot, Sy_robot, color='yellow', label='Sy(t) do Robô')
 
-        plt.legend()
+        plt.axis('equal')
 
-        plt.title("Gráfico das componentes Sx e Sy da Bola e do Robo")
-        plt.xlabel("t(s)")
-        plt.ylabel("S(m)")
+        plt.legend()
+        plt.grid(True)
+
+        plt.title("Gráfico da componente Sy da Bola e do Robô")
+        plt.xlabel("t (s)")
+        plt.ylabel("S (m)")
 
         plt.show()
 
-    def plot_graph_three(self):
-        Vy_ball = []
-        Vx_ball = []
-        Vx_robot = []
-        Vy_robot = []
-        i = 0
+    def plot_graph_two_X(self):
+        T_ball = []
+        Sx_ball = []
+        T_robot = []
+        Sx_robot = []
 
-        while i <= 9:
-            x = (2*0.0244*i + 0.4324)
-            if x <= self.Field.Interception_Robot[1][2]:
-                Vy_ball.append(x)
-                Vx_ball.append(i)
-                Vx_robot.append(i)
-                Vy_robot.append(0.4)
-                if x == self.Field.Interception_Robot[1][2]:
-                    print(x)
-            else:
-                break
-            i += 0.2
+        t = 0
+
+        Mx, Qx = self.rect_x()
+
+        while t <= 4.2:
+            VxB = ((-0.008 * pow(t, 3)) - (0.15 * pow(t, 2)) + 2.5 * t + 1)
+            VxR = Mx * t + Qx
+
+            T_ball.append(t)
+            Sx_ball.append(VxB)
+
+            T_robot.append(t)
+            Sx_robot.append(VxR)
+
+            t += 0.2
 
         '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
              / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
 
-        plt.plot(Vx_ball, Vy_ball, color='red')
-        plt.plot(Vx_robot, Vy_robot, color='yellow')
+        plt.plot(T_ball, Sx_ball, color='red', label='Sy(t) da Bola')
+        plt.plot(T_robot, Sx_robot, color='yellow', label='Sy(t) do Robô')
 
-        plt.title("Gráfico das componentes Vx e Vy da Bola e do Robô")
-        plt.xlabel("t(s)")
-        plt.ylabel("v(m/s)")
+        plt.axis('equal')
+
+        plt.legend()
+        plt.grid(True)
+
+        plt.title("Gráfico da componente Sx da Bola e do Robô")
+        plt.xlabel("t (s)")
+        plt.ylabel("S (m)")
 
         plt.show()
 
-    def plot_graph_four(self):
-        Ay_Ball = []
-        Ax_Ball = []
-        Ax_Robot = []
-        Ay_Robot = []
+    def plot_graph_threeY(self):
+        T_ball = []
+        Vy_ball = []
+        T_robot = []
+        Vy_robot = []
 
-        i = 0
+        t = 0
 
-        while i <= 9:
-            x = (2 * 0.0244)
-            if x <= self.Field.Interception_Robot[1][2]:
-                Ay_Ball.append(x)
-                Ax_Ball.append(i)
-                Ax_Robot.append(i)
-                Ay_Robot.append(0)
-                if x == self.Field.Interception_Robot[1][2]:
-                    print(x)
-            else:
-                break
-            i += 0.2
+        My, Qy = self.rect_y()
 
-        plt.plot(Ax_Ball, Ay_Ball, color='red')
-        plt.plot(Ax_Robot, Ay_Robot, color='yellow')
+        while t <= 4.2:
+            VyB = ((-0.024 * pow(t, 2)) - 0.3 * t + 2.5)
+            VyR = My
+            T_ball.append(t)
+            Vy_ball.append(VyB)
 
-        plt.title("Gráfico das componentes Ax e Ay da Bola e do Robô")
-        plt.xlabel("t(s)")
-        plt.ylabel("a(m/s^2)")
+            T_robot.append(t)
+            Vy_robot.append(VyR)
+
+            t += 0.2
+
+        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
+             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
+
+        plt.plot(T_ball, Vy_ball, color='red', label='Vy(t) da Bola')
+        plt.plot(T_robot, Vy_robot, color='yellow', label='Vy(t) do Robô')
+
+        plt.axis('equal')
+
+        plt.legend()
+        plt.grid(True)
+
+        plt.title("Gráfico da componente Vy da Bola e do Robô")
+        plt.xlabel("t (s)")
+        plt.ylabel("v (m/s)")
+
+        plt.show()
+
+    def plot_graph_threeX(self):
+        T_ball = []
+        Vx_ball = []
+        T_robot = []
+        Vx_robot = []
+
+        t = 0
+
+        Mx, Qx = self.rect_y()
+
+        while t <= 4.2:
+            VxB = -1 * 0.3 * pow(t, 0.5) + 1.6
+            VxR = Mx
+            T_ball.append(t)
+            Vx_ball.append(VxB)
+
+            T_robot.append(t)
+            Vx_robot.append(VxR)
+
+            t += 0.2
+
+        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
+             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
+
+        plt.plot(T_ball, Vx_ball, color='red', label='Vx(t) da Bola')
+        plt.plot(T_robot, Vx_robot, color='yellow', label='Vx(t) do Robô')
+
+        plt.axis('equal')
+
+        plt.legend()
+        plt.grid(True)
+
+        plt.title("Gráfico da componente Vx da Bola e do Robô")
+        plt.xlabel("t (s)")
+        plt.ylabel("v (m/s)")
+
+        plt.show()
+
+    def plot_graph_fourY(self):
+        T_ball = []
+        Ay_ball = []
+        T_robot = []
+        Ay_robot = []
+
+        t = 0
+
+        while t <= 4.2:
+            AyB = -1 * (0.15 * pow(t, 0.5))
+            AyR = 0
+            T_ball.append(t)
+            Ay_ball.append(AyB)
+
+            T_robot.append(t)
+            Ay_robot.append(AyR)
+
+            t += 0.2
+
+        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
+             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
+
+        plt.plot(T_ball, Ay_ball, color='red', label='Ay(t) da Bola')
+        plt.plot(T_robot, Ay_robot, color='yellow', label='Ay(t) do Robô')
+
+        plt.axis('equal')
+
+        plt.legend()
+        plt.grid(True)
+
+        plt.title("Gráfico da componente Ay da Bola e do Robô")
+        plt.xlabel("t (s)")
+        plt.ylabel("A (m/s²)")
+
+        plt.show()
+
+    def plot_graph_fourX(self):
+        T_ball = []
+        Ax_ball = []
+        T_robot = []
+        Ax_robot = []
+
+        t = 0
+
+        while t <= 4.2:
+            AxB = ((-0.048 * t) - 0.3)
+            AxR = 0
+            T_ball.append(t)
+            Ax_ball.append(AxB)
+
+            T_robot.append(t)
+            Ax_robot.append(AxR)
+
+            t += 0.2
+
+        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
+             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
+
+        plt.plot(T_ball, Ax_ball, color='red', label='Ax(t) da Bola')
+        plt.plot(T_robot, Ax_robot, color='yellow', label='Ax(t) do Robô')
+
+        plt.axis('equal')
+
+        plt.legend()
+        plt.grid(True)
+
+        plt.title("Gráfico da componente Ax da Bola e do Robô")
+        plt.xlabel("t (s)")
+        plt.ylabel("A (m/s²)")
 
         plt.show()
