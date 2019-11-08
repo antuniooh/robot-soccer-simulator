@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 import File_Handling_functions as fh
+import math as mth
 
 '''
 Sx = ((-0.008 * pow(t, 3)) - (0.15 * pow(t, 2)) + 2.5 * t + 1)
@@ -15,14 +16,26 @@ Ay = - (0.15 * pow(t, 0.5))
 
 
 class Equation:
-    def __init__(self, field):
+    def __init__(self, field, intercepX=0, intercepY=0):
         self.Field = field
         self.X_ball = []
         self.Y_ball = []
         self.T_ball = []
+        self.Sy_Robot = []
+        self.Sx_Robot = []
+        self.InterceptionPointX = intercepX
+        self.InterceptionPointY = intercepY
 
     def fill_x_and_y_lists(self):
         self.X_ball, self.Y_ball, self.T_ball = fh.create_matrix(self.Field.Ball_txt, 0)
+
+    def calculate_distance(self, x1, y1, x2, y2):
+        X = x2 - x1
+        Y = y2 - y1
+
+        R = mth.sqrt(pow(X, 2) + pow(Y, 2))
+
+        return R
 
     def rect_y(self):
         print("Tempo Bola: %.5f" % self.Field.Interception_Index_Points[0])
@@ -85,7 +98,7 @@ class Equation:
 
         Xrobo = []
         Yrobo = []
-        while x <= 9:
+        while x <= self.Field.Robot.X:
             TrajRobo = m*x + q
             Xrobo.append(x)
             Yrobo.append(TrajRobo)
@@ -139,8 +152,7 @@ class Equation:
 
             t += 0.2
 
-        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
-             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
+        self.Sy_Robot = Sy_robot
 
         plt.plot(T_ball, Sy_ball, color='red', label='Sy(t) da Bola')
         plt.plot(T_robot, Sy_robot, color='yellow', label='Sy(t) do Robô')
@@ -178,8 +190,7 @@ class Equation:
 
             t += 0.2
 
-        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
-             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
+        self.Sx_Robot = Sx_robot
 
         plt.plot(T_ball, Sx_ball, color='red', label='Sy(t) da Bola')
         plt.plot(T_robot, Sx_robot, color='yellow', label='Sy(t) do Robô')
@@ -216,9 +227,6 @@ class Equation:
 
             t += 0.2
 
-        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
-             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
-
         plt.plot(T_ball, Vy_ball, color='red', label='Vy(t) da Bola')
         plt.plot(T_robot, Vy_robot, color='yellow', label='Vy(t) do Robô')
 
@@ -241,7 +249,7 @@ class Equation:
 
         t = 0
 
-        Mx, Qx = self.rect_y()
+        Mx, Qx = self.rect_x()
 
         while t <= 4.2:
             VxB = -1 * 0.3 * pow(t, 0.5) + 1.6
@@ -254,8 +262,6 @@ class Equation:
 
             t += 0.2
 
-        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
-             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
 
         plt.plot(T_ball, Vx_ball, color='red', label='Vx(t) da Bola')
         plt.plot(T_robot, Vx_robot, color='yellow', label='Vx(t) do Robô')
@@ -290,9 +296,6 @@ class Equation:
 
             t += 0.2
 
-        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
-             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
-
         plt.plot(T_ball, Ay_ball, color='red', label='Ay(t) da Bola')
         plt.plot(T_robot, Ay_robot, color='yellow', label='Ay(t) do Robô')
 
@@ -326,9 +329,6 @@ class Equation:
 
             t += 0.2
 
-        '''m_robot = ((self.Field.Interception_Robot[1][2] - self.Field.Robot.Y)
-             / (self.Field.Interception_Robot[1][1] - self.Field.Robot.X))'''
-
         plt.plot(T_ball, Ax_ball, color='red', label='Ax(t) da Bola')
         plt.plot(T_robot, Ax_robot, color='yellow', label='Ax(t) do Robô')
 
@@ -342,3 +342,61 @@ class Equation:
         plt.ylabel("A (m/s²)")
 
         plt.show()
+
+    def plot_graph_five(self):
+        distances = []
+        time = []
+
+        Sy_Robot = []
+        Sx_Robot = []
+
+        index = 0
+        t = 0
+        My, Qy = self.rect_y()
+        Mx, Qx = self.rect_x()
+
+        while t <= 4.2:
+            SyR = My * t + Qy
+            SxR = Mx * t + Qx
+
+            Sy_Robot.append(SyR)
+            Sx_Robot.append(SxR)
+
+            t += 0.2
+
+        t = 0
+
+        print("graph 5:\n")
+        while True:
+            xball = self.X_ball[index]
+            yball = self.Y_ball[index]
+            xrobot = Sx_Robot[index]
+            yrobot = Sy_Robot[index]
+
+            print(xrobot, end=', ')
+            print(yrobot)
+
+            distance = self.calculate_distance(xball, yball, xrobot, yrobot)
+            distances.append(distance)
+
+            time.append(t)
+
+            index += 2
+            t += 2
+
+            if t == 4:
+                break
+
+        plt.plot(time, distances, color='red', label='Distância relativa do Robô à Bola')
+
+        plt.axis('equal')
+
+        plt.legend()
+        plt.grid(True)
+
+        plt.title("Gráfico da componente Ax da Bola e do Robô")
+        plt.xlabel("t (s)")
+        plt.ylabel("d (m)")
+
+        plt.show()
+

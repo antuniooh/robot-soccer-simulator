@@ -16,7 +16,7 @@ def main():
         def exibeValor():
             # mensagem["text"]="Valor: "+ combo.get()
             print(combo.get())
-            Graph = bpg.Equation(Field)
+            Graph = bpg.Equation(Field, 2.444, 1.867)
             Graph.fill_x_and_y_lists()
             if (combo.get() == "Ponto de interceptação"):
                 Graph.plot_graph_one()
@@ -29,9 +29,8 @@ def main():
             elif (combo.get() == "Acelereração x Tempo"):
                 Graph.plot_graph_fourY()
                 Graph.plot_graph_fourX()
-
-            #elif (combo.get() == "Distancia x Tempo"):
-            #    Graph.plot_graph_five()
+            elif (combo.get() == "Distancia x Tempo"):
+                Graph.plot_graph_five()
 
 
         nova_janela = tk.Tk()
