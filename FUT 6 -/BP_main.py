@@ -17,15 +17,25 @@ for i in range(100):
     acessa.append(a)
     a+=3
 
+ponto = []
 def imprime(evt):
+
     w = evt.widget
     x = 0
     index = int(w.curselection()[0])
 
+    para = 0
     for i in range(len(acessa)):
         if(acessa[i] == index):
-            print(bpf.MPontos[i])
-    #value = w.get(index)
+            ponto.append(bpf.MPontos[i][0])
+            ponto.append(bpf.MPontos[i][1])
+            ponto.append(bpf.MPontos[i][2])
+            print(ponto[1])
+            para = 1
+            break
+    if para == 0:
+        messagebox.showinfo("Aviso", "Isto não é um ponto de interceptação!!!")
+    value = w.get(index)
     #print(bpf.MPontos[0])
 
     #print('You selected item %d: "%s"' % (index, value))
@@ -36,7 +46,7 @@ def main():
         def exibeValor():
             # mensagem["text"]="Valor: "+ combo.get()
             print(combo.get())
-            Graph = bpg.Equation(Field, 2.444, 1.867)
+            Graph = bpg.Equation(Field, ponto[1], ponto[2], ponto[0])
             Graph.fill_x_and_y_lists()
             if (combo.get() == "Ponto de interceptação"):
                 Graph.plot_graph_one()
@@ -56,6 +66,8 @@ def main():
         nova_janela = tk.Tk()
         nova_janela.title("Bomba Patch 2020 ATUALIZADO")
         nova_janela.geometry("1200x700")
+
+
 
         mostraPontos = Listbox(nova_janela, width=80, height=40,font=("Helvetica", 10),highlightthickness=2, selectbackground = "red")
         mostraPontos.place(relx=0.7, rely=0.5, anchor=CENTER)
@@ -114,7 +126,7 @@ def main():
 
     image1 = tk.PhotoImage(file="fifabanner.png")
     image1 = image1.subsample(1, 1)
-    labelBG = tk.Label(image=image1)
+    labelBG = tk.Label(janela, image=image1)
     labelBG.place(x=0, y=0, relwidth=1.0, relheight=1.0)
 
     pedeX = Label(janela, text="Digite o X inicial do robo: ", font=("Arial Bold", 14))
@@ -128,9 +140,9 @@ def main():
     entraY.place(x=940, y=400, anchor=CENTER)
 
     botao = tk.Button(janela, text="Enviar", bd="5", width=8, height=2, command=pegaPontos)
-    botao["background"] = "yellow"
+    botao["background"] = "#ccff66"
     botao.pack(side='top')
-    botao.place(x=840, y=450, anchor=CENTER)
+    botao.place(x=840, y=460, anchor=CENTER)
 
     janela.mainloop()
 

@@ -16,7 +16,7 @@ Ay = - (0.15 * pow(t, 0.5))
 
 
 class Equation:
-    def __init__(self, field, intercepX=0, intercepY=0):
+    def __init__(self, field, intercepX=0, intercepY=0 , time=0):
         self.Field = field
         self.X_ball = []
         self.Y_ball = []
@@ -25,6 +25,7 @@ class Equation:
         self.Sx_Robot = []
         self.InterceptionPointX = intercepX
         self.InterceptionPointY = intercepY
+        self.InterceptionTime = time
 
     def fill_x_and_y_lists(self):
         self.X_ball, self.Y_ball, self.T_ball = fh.create_matrix(self.Field.Ball_txt, 0)
