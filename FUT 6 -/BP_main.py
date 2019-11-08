@@ -11,65 +11,74 @@ from tkinter.ttk import *
 import BP_classes as bpc
 from tkinter import scrolledtext
 
-acessa=[]
+acessa = []
 a = 2
 for i in range(100):
     acessa.append(a)
-    a+=3
+    a += 3
 
 ponto = []
-def imprime(evt):
 
+
+def imprime(evt):
     w = evt.widget
     x = 0
     index = int(w.curselection()[0])
 
     para = 0
     for i in range(len(acessa)):
-        if(acessa[i] == index):
-            ponto.append(bpf.MPontos[i][0])
-            ponto.append(bpf.MPontos[i][1])
-            ponto.append(bpf.MPontos[i][2])
-            print(ponto[1])
+        if acessa[i] == index:
+            if len(ponto) == 0:
+                ponto.append(bpf.MPontos[i][0])
+                ponto.append(bpf.MPontos[i][1])
+                ponto.append(bpf.MPontos[i][2])
+            else:
+                ponto[0] = bpf.MPontos[i][0]
+                ponto[1] = bpf.MPontos[i][1]
+                ponto[2] = bpf.MPontos[i][2]
             para = 1
             break
     if para == 0:
         messagebox.showinfo("Aviso", "Isto não é um ponto de interceptação!!!")
     value = w.get(index)
-    #print(bpf.MPontos[0])
+    # print(bpf.MPontos[0])
 
-    #print('You selected item %d: "%s"' % (index, value))
+    # print('You selected item %d: "%s"' % (index, value))
+
+
 def main():
-
     def imprimePontos():
 
         def exibeValor():
-            # mensagem["text"]="Valor: "+ combo.get()
             print(combo.get())
+            print(ponto)
             Graph = bpg.Equation(Field, ponto[1], ponto[2], ponto[0])
             Graph.fill_x_and_y_lists()
-            if (combo.get() == "Ponto de interceptação"):
+
+            if combo.get() == "Ponto de interceptação":
                 Graph.plot_graph_one()
-            elif (combo.get() == "Posição x Tempo"):
+
+            elif combo.get() == "Posição x Tempo":
                 Graph.plot_graph_two_Y()
                 Graph.plot_graph_two_X()
-            elif (combo.get() == "Velocidade x Tempo"):
+
+            elif combo.get() == "Velocidade x Tempo":
                 Graph.plot_graph_threeY()
                 Graph.plot_graph_threeX()
-            elif (combo.get() == "Acelereração x Tempo"):
+
+            elif combo.get() == "Acelereração x Tempo":
                 Graph.plot_graph_fourY()
                 Graph.plot_graph_fourX()
-            elif (combo.get() == "Distancia x Tempo"):
-                Graph.plot_graph_five()
 
+            elif combo.get() == "Distancia x Tempo":
+                Graph.plot_graph_five()
 
         nova_janela = tk.Tk()
         nova_janela.title("Bomba Patch 2020 ATUALIZADO")
         nova_janela.geometry("1200x700")
 
-
-
-        mostraPontos = Listbox(nova_janela, width=80, height=40,font=("Helvetica", 10),highlightthickness=2, selectbackground = "red")
+        mostraPontos = Listbox(nova_janela, width=80, height=40, font=("Helvetica", 10), highlightthickness=2,
+                               selectbackground="red")
         mostraPontos.place(relx=0.7, rely=0.5, anchor=CENTER)
         mostraPontos.delete(1, END)
         mostraPontos.bind('<<ListboxSelect>>', imprime)
@@ -77,12 +86,13 @@ def main():
         scrollbar = tk.Scrollbar(nova_janela, orient="vertical")
         scrollbar.config(command=mostraPontos.yview)
         scrollbar.pack(side="right", fill="y")
-        mostraPontos.config(yscrollcommand = scrollbar.set)
-
+        mostraPontos.config(yscrollcommand=scrollbar.set)
 
         if bpf.get_interception_points(Field, mostraPontos):
             combo = Combobox(nova_janela, width=30)
-            combo['values'] = ("Ponto de interceptação", "Posição x Tempo", "Velocidade x Tempo", "Acelereração x Tempo", "Distancia x Tempo")
+            combo['values'] = (
+            "Ponto de interceptação", "Posição x Tempo", "Velocidade x Tempo", "Acelereração x Tempo",
+            "Distancia x Tempo")
             combo.current(0)  # definimos o valor padrão!
             combo.pack()
             combo.place(x=280, y=300, anchor=CENTER)
@@ -90,7 +100,6 @@ def main():
             botao = Button(nova_janela, text="Mostrar Gráfico", command=exibeValor)
             botao.pack()
             botao.place(x=280, y=350, anchor=CENTER)
-
 
         nova_janela.mainloop()
 
@@ -115,8 +124,6 @@ def main():
             Field.run_coordinates()
 
             imprimePontos()
-
-
 
     Coordinates = fh.read_file("bola.txt")
 

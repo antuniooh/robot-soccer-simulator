@@ -39,22 +39,22 @@ class Equation:
         return R
 
     def rect_y(self):
-        print("Tempo Bola: %.5f" % self.Field.Interception_Index_Points[0])
+        # print("Tempo Bola: %.5f" % self.Field.Interception_Index_Points[0])
 
         To = 0
-        Tf = self.Field.Ball_txt[self.Field.Interception_Index_Points[0]][0]
+        Tf = self.InterceptionTime
 
         Yo = self.Field.Robot.Y
-        Yf = self.Field.Interception_Robot[1][2]
+        Yf = self.InterceptionPointY
 
         deltaY = Yf - Yo
         deltaX = Tf - To
 
-        m = deltaY/deltaX
+        m = deltaY / deltaX
         q = Yf - (m * Tf)
 
-        print("deltaY = %.5f  deltaX = %.5f" % (deltaY, deltaX))
-        print("m = %.5f  q = %.5f\n" % (m, q))
+        '''print("deltaY = %.5f  deltaX = %.5f" % (deltaY, deltaX))
+        print("m = %.5f  q = %.5f\n" % (m, q))'''
 
         return m, q
 
@@ -62,10 +62,10 @@ class Equation:
         print("Tempo Bola: %.5f" % self.Field.Interception_Index_Points[0])
 
         To = 0
-        Tf = self.Field.Ball_txt[self.Field.Interception_Index_Points[0]][0]
+        Tf = self.InterceptionTime
 
         Xo = self.Field.Robot.X
-        Xf = self.Field.Interception_Robot[1][1]
+        Xf = self.InterceptionPointX
 
         deltaY = Xf - Xo
         deltaX = Tf - To
@@ -73,21 +73,21 @@ class Equation:
         m = deltaY / deltaX
         q = Xf - (m * Tf)
 
-        print("deltaY = %.5f  deltaX = %.5f" % (deltaY, deltaX))
-        print("m = %.5f  q = %.5f\n" % (m, q))
+        '''print("deltaY = %.5f  deltaX = %.5f" % (deltaY, deltaX))
+        print("m = %.5f  q = %.5f\n" % (m, q))'''
 
         return m, q
 
     def rect_graphOne(self):
-        Xo = self.Field.Interception_Robot[0][1]
-        Yo = self.Field.Interception_Robot[0][2]
-        Xf = self.Field.Interception_Robot[1][1]
-        Yf = self.Field.Interception_Robot[1][2]
+        Xo = self.Field.Robot.X
+        Yo = self.Field.Robot.Y
+        Xf = self.InterceptionPointX
+        Yf = self.InterceptionPointY
 
         deltaY = Yf - Yo
         deltaX = Xf - Xo
 
-        m = deltaY/deltaX
+        m = deltaY / deltaX
         q = Yf - m * Xf
 
         return m, q
@@ -100,7 +100,7 @@ class Equation:
         Xrobo = []
         Yrobo = []
         while x <= self.Field.Robot.X:
-            TrajRobo = m*x + q
+            TrajRobo = m * x + q
             Xrobo.append(x)
             Yrobo.append(TrajRobo)
             x += 1
@@ -125,8 +125,10 @@ class Equation:
         InterceptionPoint = self.Field.Interception_Index_Points[0]
 
         plt.scatter(float(self.Field.Ball_txt[InterceptionPoint][1]), float(self.Field.Ball_txt[InterceptionPoint][2]))
-        plt.annotate('Ponto com Menor Tempo', xy=(float(self.Field.Ball_txt[InterceptionPoint][1]), float(self.Field.Ball_txt[InterceptionPoint][2])),
-                     xytext=(float(self.Field.Ball_txt[InterceptionPoint][1]), float(self.Field.Ball_txt[InterceptionPoint][2]) + 1),
+        plt.annotate('Ponto com Menor Tempo', xy=(
+        float(self.Field.Ball_txt[InterceptionPoint][1]), float(self.Field.Ball_txt[InterceptionPoint][2])),
+                     xytext=(float(self.Field.Ball_txt[InterceptionPoint][1]),
+                             float(self.Field.Ball_txt[InterceptionPoint][2]) + 1),
                      arrowprops=dict(arrowstyle='->'))
 
         plt.show()
@@ -142,7 +144,7 @@ class Equation:
         My, Qy = self.rect_y()
 
         while t <= 4.2:
-            SyB = ((0.2 * pow(t, 1.5)) + 1.6*t + 1)
+            SyB = ((0.2 * pow(t, 1.5)) + 1.6 * t + 1)
             SyR = My * t + Qy
 
             T_ball.append(t)
@@ -151,7 +153,7 @@ class Equation:
             T_robot.append(t)
             Sy_robot.append(SyR)
 
-            t += 0.2
+            t += 0.02
 
         self.Sy_Robot = Sy_robot
 
@@ -189,7 +191,7 @@ class Equation:
             T_robot.append(t)
             Sx_robot.append(VxR)
 
-            t += 0.2
+            t += 0.02
 
         self.Sx_Robot = Sx_robot
 
@@ -226,7 +228,7 @@ class Equation:
             T_robot.append(t)
             Vy_robot.append(VyR)
 
-            t += 0.2
+            t += 0.02
 
         plt.plot(T_ball, Vy_ball, color='red', label='Vy(t) da Bola')
         plt.plot(T_robot, Vy_robot, color='yellow', label='Vy(t) do Robô')
@@ -261,8 +263,7 @@ class Equation:
             T_robot.append(t)
             Vx_robot.append(VxR)
 
-            t += 0.2
-
+            t += 0.02
 
         plt.plot(T_ball, Vx_ball, color='red', label='Vx(t) da Bola')
         plt.plot(T_robot, Vx_robot, color='yellow', label='Vx(t) do Robô')
@@ -295,7 +296,7 @@ class Equation:
             T_robot.append(t)
             Ay_robot.append(AyR)
 
-            t += 0.2
+            t += 0.02
 
         plt.plot(T_ball, Ay_ball, color='red', label='Ay(t) da Bola')
         plt.plot(T_robot, Ay_robot, color='yellow', label='Ay(t) do Robô')
@@ -328,7 +329,7 @@ class Equation:
             T_robot.append(t)
             Ax_robot.append(AxR)
 
-            t += 0.2
+            t += 0.02
 
         plt.plot(T_ball, Ax_ball, color='red', label='Ax(t) da Bola')
         plt.plot(T_robot, Ax_robot, color='yellow', label='Ax(t) do Robô')
@@ -352,7 +353,9 @@ class Equation:
         Sx_Robot = []
 
         index = 0
+
         t = 0
+
         My, Qy = self.rect_y()
         Mx, Qx = self.rect_x()
 
@@ -363,30 +366,27 @@ class Equation:
             Sy_Robot.append(SyR)
             Sx_Robot.append(SxR)
 
-            t += 0.2
+            t += 0.02
 
         t = 0
 
-        print("graph 5:\n")
-        while True:
+        xrobot = 0
+        yrobot = 0
+
+        while xrobot != self.InterceptionPointX and yrobot != self.InterceptionPointY:
             xball = self.X_ball[index]
             yball = self.Y_ball[index]
             xrobot = Sx_Robot[index]
             yrobot = Sy_Robot[index]
 
-            print(xrobot, end=', ')
-            print(yrobot)
-
             distance = self.calculate_distance(xball, yball, xrobot, yrobot)
+            print("d = %.3f  R(%.3f, %.3f) B(%.3f, %.3f)" % (distance, xrobot, yrobot, xball, yball))
             distances.append(distance)
 
             time.append(t)
 
-            index += 2
-            t += 2
-
-            if t == 4:
-                break
+            index += 1
+            t += 0.02
 
         plt.plot(time, distances, color='red', label='Distância relativa do Robô à Bola')
 
@@ -395,9 +395,8 @@ class Equation:
         plt.legend()
         plt.grid(True)
 
-        plt.title("Gráfico da componente Ax da Bola e do Robô")
+        plt.title("Gráfico da distância relativa do Robô à Bola em função do tempo")
         plt.xlabel("t (s)")
         plt.ylabel("d (m)")
 
         plt.show()
-
