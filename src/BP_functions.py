@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import BP_classes as bpc
 import BP_graphs as bpg
 from tkinter import scrolledtext

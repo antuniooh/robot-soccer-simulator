@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import BP_classes as bpc
 import BP_graphs as bpg
 import File_Handling_functions as fh
@@ -136,9 +138,9 @@ def main():
     labelBG = tk.Label(janela, image=image1)
     labelBG.place(x=0, y=0, relwidth=1.0, relheight=1.0)
 
-    pedeX = Label(janela, text="Digite o X inicial do robo: ", font=("Arial Bold", 14))
+    pedeX = Label(janela, text="Digite o X inicial do robo: ", font=("Arial Bold", 12))
     pedeX.place(x=750, y=350, anchor=CENTER)
-    pedeX = Label(janela, text="Digite o Y inicial do robo: ", font=("Arial Bold", 14))
+    pedeX = Label(janela, text="Digite o Y inicial do robo: ", font=("Arial Bold", 12))
     pedeX.place(x=750, y=400, anchor=CENTER)
 
     entraX = Entry(janela, width=14, font=("Arial Bold", 14))
