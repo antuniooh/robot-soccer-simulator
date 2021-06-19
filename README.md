@@ -1,59 +1,77 @@
-# Projeto Ora Bolas
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/antuniooh/robot-soccer-simulator">
 
-Projeto semestral da matéria de Física Clássica, ministrada no Centro Universitário FEI. Consiste na leitura de arquivo de posição da bola e a confirmação se ocorre interceptação do robô.
+  <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/antuniooh/robot-soccer-simulator">
+  
+  <a href="https://github.com/antuniooh/robot-soccer-simulator/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/antuniooh/robot-soccer-simulator">
+  </a>
+  
+   <img alt="GitHub" src="https://img.shields.io/github/license/antuniooh/robot-soccer-simulator">
+</p>
 
-![image](src/fifabanner.png)
 
-## Funcionalidade
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://github.com/antuniooh/robot-soccer-simulator">
+    <img src="https://cdn0.iconfinder.com/data/icons/thin-analytics/57/thin-360_hierarchy_diagram_structure-512.png" alt="Logo" width="550">
+  </a>
+</p>
 
-O programa lê o arquivo de trajetória da bola e utilizando atributos do robô small size mostra se é possível o robô interceptar a bola ou não. Para definir se haverá a intercepção leva-se em conta o raio de interceptação do robô, sua velocidade de movimento e a posição inicial sendo definida pelo usuário.
+<p align="center">
+  <img alt="Math" src="https://img.shields.io/badge/Math-red?style=for-the-badge&logo=math&logoColor=white"/>
+  <img alt="Python" src="https://img.shields.io/badge/Python-darkblue?style=for-the-badge&logo=python&logoColor=white"/>
+    <img alt="Graph" src="https://img.shields.io/badge/Graph-darkrgreen?style=for-the-badge&logo=graph&logoColor=white"/>
+</p>
 
-**1 - Small Size** - Caracteristicas do robô utilizado. 
 
-![image](images/robot.png)
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#-about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#-how-to-run">How To Run</a>
+    </li>
+  </ol>
+</details>
 
-## Execução
 
-Tanto no Windows quanto no Linux a execução é feita a partir da execução da linha a seguir no terminal, ou utilizando uma IDE de sua preferência. 
+<!-- ABOUT THE PROJECT -->
+## 💻 About The Project
+The program reads the ball trajectory file and using small size robot attributes shows if it is possible for the robot to intercept the ball or not. To define whether there will be an intercept, the robot's intercept radius, its movement speed and the initial position being defined by the user are taken into account.
 
-Inicialmente deve-se instalar as bibliotecas necessárias:
+As soon as the application starts, the user must enter the X and Y position of the robot, so that the calculation is carried out and enables the prediction of contact between the robot and the ball, taking into account its trajectory, as well as the speed of the robot.
+For this we use the formula of distance between two points, to calculate all the possibilities of time from the initial position of the robot and the trajectory of the ball (from the txt file).
+
+![app](https://github.com/antuniooh/robot-soccer-simulator/blob/master/images/app.gif)
+
+<!-- HOW TO RUN -->
+## 🚀 How To Run
 
 ```bash
-python -m pip install -U pip
-python -m pip install -U matplotlib
-```
 
-```bash
-python BP_main.py
-```
+# Clone the repository
+$ git clone https://github.com/antuniooh/robot-soccer-simulator.git
 
-Entretanto, utilizando apenas a linha acima é possivel que o compilador de sua máquina utilize o python em sua versão 2.7. Para resolver isso é mais vantajoso utilizar:
+# Access the project folder in your terminal / cmd
+$ cd robot-soccer-simulator/src
 
-```bash
-python3 BP_main.py
-```
+# Install the libs
+$ python -m pip install -U pip
+$ python -m pip install -U matplotlib
 
-## Funcionamento
+# In both Windows and Linux, the execution is done by executing the following line in the terminal, or using an IDE of your choice.
+$ python3 BP_main.py
 
-Assim que inicia a aplicação o usuário deve inserir a posição em X e Y do robô, para que o cálculo seja realizado e possibilite a previsão de contato entre o robô e a bola, levando em conta a trajetória da mesma, bem como a velocidade do robô. 
-Para isso utilizamos a fórmula de distância entre dois pontos, para calcular todas as possibilidades de tempo a partir da posição inicial do robô e a trajetória da bola (provinda do arquivo txt).
 
-![image](images/main.png)
+<!-- AUTHORS -->
+## 🤖 Authors
 
-Desse modo há a possibilidade de três casos:
-
-### 1 - Posição fora do campo
-
-![image](images/pointOut.png)
-
-### 2 - Robô não consegue alcançar a bola
-
-![image](images/dontGet.png)
-
-### 3 - Robô consegue alcançar a bola
-
-![image](images/robotGet.png)
-
-Nesse último caso, observa-se na direita todas as possíveis movimentações onde o robô alcançará a bola, bem como o tempo que levará para chegar nessas determinadas posições.
-
-Além disso, na esquerda há um menu contendo todos os possíveis gráficos referentes as interceptações do robô.
+[Antonio Gustavo](https://github.com/antuniooh)           |  [João Vitor Dias](https://github.com/JoaoDias-223)           |  [Weverson da Silva](https://github.com/WebisD)
+:-------------------------:|:-------------------------:|:-------------------------:
+<img src="https://avatars.githubusercontent.com/u/51217271?v=4" alt="drawing" width="150"/>  |  <img src="https://avatars.githubusercontent.com/u/63318342?v=4" alt="drawing" width="150"/>| <img src="https://avatars.githubusercontent.com/u/49571908?v=4" alt="drawing" width="150"/>
+22.119.001-0 | 22.119.006-9 | 22.119.004-4
