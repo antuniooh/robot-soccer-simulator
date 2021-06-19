@@ -15,7 +15,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/antuniooh/robot-soccer-simulator">
-    <img src="https://cdn0.iconfinder.com/data/icons/thin-analytics/57/thin-360_hierarchy_diagram_structure-512.png" alt="Logo" width="550">
+    <img src="https://static.boredpanda.com/blog/wp-content/uploads/2017/07/14480710_1088910881163712_8637460608775899553_o-595b50e124da7__880.jpg" alt="Logo" width="550">
   </a>
 </p>
 
@@ -67,6 +67,7 @@ $ python -m pip install -U matplotlib
 # In both Windows and Linux, the execution is done by executing the following line in the terminal, or using an IDE of your choice.
 $ python3 BP_main.py
 
+```
 
 <!-- AUTHORS -->
 ## 🤖 Authors
